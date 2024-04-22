@@ -1,10 +1,22 @@
 # https://editorconfig.org
 root = true
 
+# 适用于所有文件类型
 [*]
+# 设置文件字符集为 utf-8
 charset = utf-8
+
+# 使用空格来进行缩进
 indent_style = space
+
+# 缩进大小为 2 个空格
 indent_size = 2
+
+# 行尾使用 lf 作为换行符(lf代表linefeed，即\n)
 end_of_line = lf
+
+# 确保文件以一个空白行结尾
 insert_final_newline = true
+
+# 删除行尾多余的空格
 trim_trailing_whitespace = true
