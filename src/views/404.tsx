@@ -11,7 +11,7 @@ function Error404() {
     <Result
       status={404}
       title='404'
-      subTitle='抱歉，找不到有页面'
+      subTitle='抱歉，当前页面丢失了'
       extra={
         <Button type='primary' onClick={handleClick}>
           返回首页

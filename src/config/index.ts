@@ -13,24 +13,24 @@ type ENV = 'dev' | 'stg' | 'prd'
 //   env = 'prd'
 // }
 
-const env = (document.documentElement.dataset.env as ENV) || 'stg'
+const env = (document.documentElement.dataset.env as ENV) || 'staging'
 
 const config = {
-  dev: {
+  development: {
     baseApi: '/api',
     uploadApi: 'http://api-driver-dev.marsview.cc',
     cdn: 'http://xxx.aliyun.com',
     mock: false,
     mockApi: 'https://www.fastmock.site/mock/5841b82d5672783b6fd62bb2a06aeb1f/api'
   },
-  stg: {
+  staging: {
     baseApi: '/api',
     uploadApi: 'http://api-driver-stg.marsview.cc',
     cdn: 'http://xxx.aliyun.com',
     mock: false,
     mockApi: 'https://www.fastmock.site/mock/5841b82d5672783b6fd62bb2a06aeb1f/api'
   },
-  prd: {
+  production: {
     baseApi: '/api',
     uploadApi: 'http://api-driver.marsview.cc',
     cdn: 'http://xxx.aliyun.com',
@@ -41,5 +41,5 @@ const config = {
 
 export default {
   env,
-  ...config['prd']
+  ...config['production']
 }
