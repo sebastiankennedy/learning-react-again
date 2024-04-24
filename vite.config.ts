@@ -10,7 +10,8 @@ export default defineConfig({
     port: 8080,
     proxy: {
       '/api': 'http://api-driver.marsview.cc'
-    }
+    },
+    hmr: true
   },
   resolve: {
     alias: {
