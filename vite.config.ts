@@ -7,7 +7,7 @@ import path from 'path'
 export default defineConfig({
   server: {
     host: 'localhost',
-    port: 8080,
+    port: 22222,
     proxy: {
       '/api': 'http://api-driver.marsview.cc'
     },
