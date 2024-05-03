@@ -3,10 +3,16 @@ import styles from './index.module.less'
 import {SignIn} from "@/types/api";
 import api from "@/api";
 import storage from "@/utils/storage";
+import {useState} from "react";
 
 export default function Login() {
+  const [loading, setLoading] = useState(false)
+
   const onFinish = async (values: SignIn.params) => {
+    setLoading(true)
     const data = await api.signIn(values)
+    setLoading(false)
+
     storage.set('token', data)
     message.success('登录成功')
 
@@ -27,7 +33,7 @@ export default function Login() {
           </Form.Item>
 
           <Form.Item>
-            <Button type='primary' block htmlType='submit'>
+            <Button type='primary' block htmlType='submit' loading={loading}>
               登录
             </Button>
           </Form.Item>

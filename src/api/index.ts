@@ -3,6 +3,6 @@ import {SignIn} from "@/types/api";
 
 export default {
   signIn(params: SignIn.params) {
-    return request.post('/users/login', params)
+    return request.post('/users/login', params, {showLoading: true})
   }
 }
