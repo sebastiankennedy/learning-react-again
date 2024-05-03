@@ -1,9 +1,9 @@
 import axios, { AxiosError } from 'axios'
-import { message } from 'antd'
 import { hideLoading, showLoading } from './loading'
 import storage from './storage'
 import env from '@/config'
 import {Result} from '@/types/api'
+import {message} from './AntdGlobal'
 
 console.log('config', env)
 

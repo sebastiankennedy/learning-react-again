@@ -1,4 +1,4 @@
-import { Button, Form, Input } from 'antd'
+import {Button, Form, Input, message} from 'antd'
 import styles from './index.module.less'
 import {SignIn} from "@/types/api";
 import api from "@/api";
@@ -8,7 +8,10 @@ export default function Login() {
   const onFinish = async (values: SignIn.params) => {
     const data = await api.signIn(values)
     storage.set('token', data)
-    console.log('data', data)
+    message.success('登录成功')
+
+    const params = new URLSearchParams(location.search)
+    location.href = params.get('callback') || '/welcome'
   }
   return (
     <div className={styles.login}>
