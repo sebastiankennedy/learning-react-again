@@ -3,6 +3,7 @@ import { message } from 'antd'
 import { hideLoading, showLoading } from './loading'
 import storage from './storage'
 import env from '@/config'
+import {Result} from '@/types/api'
 
 console.log('config', env)
 
@@ -22,11 +23,14 @@ instance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = 'Token::' + token
     }
+
     if (env.mock) {
       config.baseURL = env.mockApi
     } else {
       config.baseURL = env.baseApi
     }
+
+    config.headers.icode = '48136EB0007558FB'
     return {
       ...config
     }
@@ -39,11 +43,11 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
   response => {
-    const data = response.data
+    const data: Result = response.data
     hideLoading()
     if (data.code === 500001) {
       message.error(data.msg)
-      localStorage.removeItem('token')
+      storage.remove('token')
       // location.href = '/login'
     } else if (data.code != 0) {
       message.error(data.msg)
