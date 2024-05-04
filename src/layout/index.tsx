@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react'
 import {UploadOutlined, UserOutlined, VideoCameraOutlined} from '@ant-design/icons'
 import {Layout, Menu, theme, Watermark} from 'antd'
+import NavHeader from "@/components/NavHeader";
+import NavFooter from "@/components/NavFooter";
 
 const {Header, Content, Footer, Sider} = Layout
 
@@ -49,13 +51,15 @@ const App: React.FC = () => {
           侧边栏
         </Sider>
         <Layout>
-          <Header style={{padding: 0, background: colorBgContainer}}>顶部区域</Header>
+          <Header style={{padding: 0, background: colorBgContainer}}>
+            <NavHeader />
+          </Header>
           <Content style={{margin: '24px 16px 0'}}>
             <div style={{padding: 24, minHeight: 360, background: colorBgContainer}} id='content'>
               <span>content</span>
             </div>
           </Content>
-          <Footer style={{textAlign: 'center'}}>Ant Design ©2023 Created by Ant UED</Footer>
+          <NavFooter />
         </Layout>
       </Layout>
     </Watermark>
