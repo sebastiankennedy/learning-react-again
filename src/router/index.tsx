@@ -3,7 +3,7 @@ import Error403 from '@/views/403'
 import Error404 from '@/views/404'
 import Login from '@/views/login/Login'
 import Layout from "@/layout"
-import Welcome from "@/views/Welcome";
+import Index from "@/views/welcome";
 
 const router = [
   {
@@ -31,7 +31,7 @@ const router = [
     children: [
       {
         path: '/welcome',
-        element: <Welcome />
+        element: <Index />
       }
     ]
   }

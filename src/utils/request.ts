@@ -12,15 +12,16 @@ const instance = axios.create({
   baseURL: import.meta.env.VITE_BASE_API,
   timeout: 8000,
   timeoutErrorMessage: '请求超时，请稍后再试',
-  withCredentials: true
+  withCredentials: true,
+  headers: {
+    icode: '48136EB0007558FB'
+  }
 })
 
 // 请求拦截器
 instance.interceptors.request.use(
   config => {
-    if (config.showLoading) {
-      showLoading()
-    }
+    if (config.showLoading) showLoading()
 
     const token = storage.get('token')
     if (token) {
@@ -33,7 +34,6 @@ instance.interceptors.request.use(
       config.baseURL = env.baseApi
     }
 
-    config.headers.icode = '48136EB0007558FB'
     return {
       ...config
     }
@@ -77,7 +77,8 @@ interface CustomConfig {
 }
 export default {
   get<T>(url: string, params?: object, options: CustomConfig = { showLoading:true, showError: true }): Promise<T> {
-    return instance.get(url, { params, ...options })
+    return instance.get(url,
+      )
   },
   post<T>(url: string, params?: object, options: CustomConfig = { showLoading: true, showError: true}): Promise<T> {
     return instance.post(url, params)
