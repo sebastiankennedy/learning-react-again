@@ -4,9 +4,11 @@ import {SignIn} from "@/types/api";
 import api from "@/api";
 import storage from "@/utils/storage";
 import {useState} from "react";
+import {useStore} from "@/store";
 
 export default function Login() {
   const [loading, setLoading] = useState(false)
+  const updateToken = useStore(state => state.updateToken)
 
   const onFinish = async (values: SignIn.params) => {
     try {
@@ -14,6 +16,7 @@ export default function Login() {
       const data = await api.signIn(values)
       setLoading(false)
 
+      updateToken(data)
       storage.set('token', data)
       message.success('登录成功')
 
