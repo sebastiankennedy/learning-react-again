@@ -6,10 +6,21 @@ import NavFooter from "@/components/NavFooter";
 import SideMenu from "@/components//SideMenu";
 import {Outlet} from "react-router-dom";
 import styles from './index.module.less'
+import api from "@/api";
+import storage from "@/utils/storage";
 
 const {Header, Content, Footer, Sider} = Layout
 
 const App: React.FC = () => {
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+  const getUserInfo = async () => {
+    const data = await api.getUserInfo()
+    storage.set('userInfo', data)
+    console.log('data', data);
+  }
+
   return (
     <Watermark content="React">
       <Layout>

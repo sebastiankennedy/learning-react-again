@@ -12,3 +12,21 @@ export interface Result<T = any> {
   data: T,
   msg: string
 }
+
+export namespace User {
+  export interface UserItem {
+    _id: string,
+    userId: number,
+    userName: string,
+    userEmail: string,
+    mobile: number,
+    deptId: number,
+    deptName: string,
+    job: string,
+    state: number,
+    role: number,
+    roleList: string,
+    createId: number,
+    userImg: string,
+  }
+}
