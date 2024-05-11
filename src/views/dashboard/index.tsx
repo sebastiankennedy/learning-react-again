@@ -1,15 +1,21 @@
 import {Descriptions, Card, Button} from 'antd'
-import styles from './index.module.less'
 import * as echarts from 'echarts'
 import {useEffect} from 'react'
+import styles from './index.module.less'
 
 export default function DashBoard() {
   useEffect(() => {
     const lineChartDom = document.getElementById('lineChart')
     const chartInstance = echarts.init(lineChartDom as HTMLElement)
     chartInstance.setOption({
+      // title: {
+      //   text: '订单和流水走势图'
+      // },
       tooltip: {
         trigger: 'axis'
+      },
+      legend: {
+        data: ['订单', '流水']
       },
       grid: {
         left: 50,
@@ -35,57 +41,149 @@ export default function DashBoard() {
         }
       ]
     })
+    const pieChartCityDom = document.getElementById('pieChartCity')
+    const pieChartCityInstance = echarts.init(pieChartCityDom as HTMLElement)
+    pieChartCityInstance.setOption({
+      title: {
+        text: '司机城市分布',
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left'
+      },
+      series: [
+        {
+          name: '城市分布',
+          type: 'pie',
+          radius: '50%',
+          data: [
+            {value: 335, name: '北京'},
+            {value: 310, name: '上海'},
+            {value: 274, name: '广州'},
+            {value: 235, name: '杭州'},
+            {value: 400, name: '武汉'}
+          ]
+        }
+      ]
+    })
+    const pieChartAgeDom = document.getElementById('pieChartAge')
+    const pieChartAgeInstance = echarts.init(pieChartAgeDom as HTMLElement)
+    pieChartAgeInstance.setOption({
+      title: {
+        text: '司机年龄分布',
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left'
+      },
+      series: [
+        {
+          name: '年龄分布',
+          type: 'pie',
+          radius: [50, 180],
+          roseType: 'area',
+          data: [
+            {value: 30, name: '北京'},
+            {value: 40, name: '上海'},
+            {value: 60, name: '广州'},
+            {value: 20, name: '杭州'},
+            {value: 35, name: '武汉'}
+          ]
+        }
+      ]
+    })
+    const radarChartDom = document.getElementById('radarChart')
+    const radarChartDomInstance = echarts.init(radarChartDom as HTMLElement)
+    radarChartDomInstance.setOption({
+      // title: {
+      //   text: '司机模型诊断',
+      //   left: 'center'
+      // },
+      legend: {
+        data: ['司机模型诊断']
+      },
+      radar: {
+        indicator: [
+          {name: '服务态度', max: 10},
+          {name: '在线时长', max: 600},
+          {name: '接单率', max: 100},
+          {name: '评分', max: 5},
+          {name: '关注度', max: 10000}
+        ]
+      },
+      series: [
+        {
+          name: '模型诊断',
+          type: 'radar',
+          data: [
+            {
+              value: [8, 300, 80, 4, 9000],
+              name: '司机模型诊断'
+            }
+          ]
+        }
+      ]
+    })
   }, [])
-
   return (
     <div className={styles.dashboard}>
       <div className={styles.userInfo}>
-        <img className={styles.userImg} src="" alt="avatar"/>
-        <Descriptions title="User Info">
-          <Descriptions.Item label="姓名">路易斯</Descriptions.Item>
-          <Descriptions.Item label="状态">在职</Descriptions.Item>
-          <Descriptions.Item label="手机号">15089940511</Descriptions.Item>
-          <Descriptions.Item label="岗位">后端工程师</Descriptions.Item>
-          <Descriptions.Item label="部门">后端</Descriptions.Item>
+        <img
+          src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+          alt=''
+          className={styles.userImg}
+        />
+        <Descriptions title='欢迎新同学，每天都要开心！'>
+          <Descriptions.Item label='用户ID'>100001</Descriptions.Item>
+          <Descriptions.Item label='邮箱'>test@mars.com</Descriptions.Item>
+          <Descriptions.Item label='状态'>在职</Descriptions.Item>
+          <Descriptions.Item label='手机号'>17600001111</Descriptions.Item>
+          <Descriptions.Item label='岗位'>前端工程师</Descriptions.Item>
+          <Descriptions.Item label='部门'>大前端</Descriptions.Item>
         </Descriptions>
       </div>
-
       <div className={styles.report}>
         <div className={styles.card}>
-          <div className="title">司机数量</div>
+          <div className='title'>司机数量</div>
           <div className={styles.data}>100个</div>
         </div>
-
         <div className={styles.card}>
-          <div className="title">总流水</div>
-          <div className={styles.data}>1000元</div>
+          <div className='title'>总流水</div>
+          <div className={styles.data}>10000元</div>
         </div>
-
         <div className={styles.card}>
-          <div className="title">总订单</div>
+          <div className='title'>总订单</div>
           <div className={styles.data}>2000单</div>
         </div>
-
         <div className={styles.card}>
-          <div className="title">开通城市</div>
+          <div className='title'>开通城市</div>
           <div className={styles.data}>50座</div>
         </div>
       </div>
-
       <div className={styles.chart}>
         <Card title='订单和流水走势图' extra={<Button type='primary'>刷新</Button>}>
-          <div id="lineChart" className={styles.itemChart}></div>
+          <div id='lineChart' className={styles.itemChart}></div>
         </Card>
       </div>
       <div className={styles.chart}>
         <Card title='司机分布' extra={<Button type='primary'>刷新</Button>}>
-          <div id="pieChartCity" className={styles.itemChart}></div>
-          <div id="pieChartAge" className={styles.itemChart}></div>
+          <div className={styles.pieChart}>
+            <div id='pieChartCity' className={styles.itemPie}></div>
+            <div id='pieChartAge' className={styles.itemPie}></div>
+          </div>
         </Card>
       </div>
       <div className={styles.chart}>
         <Card title='模型诊断' extra={<Button type='primary'>刷新</Button>}>
-          <div id="radarChart" className={styles.itemChart}></div>
+          <div id='radarChart' className={styles.itemChart}></div>
         </Card>
       </div>
     </div>
