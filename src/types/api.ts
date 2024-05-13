@@ -13,6 +13,7 @@ export interface Result<T = any> {
   msg: string
 }
 
+// 用户类型
 export namespace User {
   export interface UserItem {
     _id: string,
@@ -28,5 +29,15 @@ export namespace User {
     roleList: string,
     createId: number,
     userImg: string,
+  }
+}
+
+// 报表数据类型
+export namespace Dashboard {
+  export interface ReportData {
+    driverCount: number,
+    totalMoney: number,
+    orderCount: number,
+    cityNum: number,
   }
 }
