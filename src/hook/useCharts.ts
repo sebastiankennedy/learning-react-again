@@ -1,4 +1,4 @@
-import React, {MutableRefObject, RefObject, useEffect, useRef, useState} from "react";
+import {RefObject, useEffect, useRef, useState} from "react";
 import * as echarts from 'echarts'
 
 export const useCharts = (): [
@@ -6,7 +6,7 @@ export const useCharts = (): [
     echarts.EChartsType | undefined
 ] => {
   // 通过 Ref 获取节点
-  const chartRef = useRef<HTMLDivElement>()
+  const chartRef = useRef<HTMLDivElement>(null)
   const [chartInstance, setChartInstance] = useState<echarts.EChartsType>()
 
   useEffect(() => {

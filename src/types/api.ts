@@ -40,4 +40,26 @@ export namespace Dashboard {
     orderCount: number,
     cityNum: number,
   }
+
+  // 定义折线图数据类型
+  export interface LineData {
+    label: string[],
+    order: number[],
+    money: number[],
+  }
+
+  // 定义饼图数据类型
+  export interface PieData {
+    value: number,
+    name: string,
+  }
+
+  // 定义雷达图数据类型
+  export interface RadarData {
+    indicator: Array<{ name: string; max: number }>,
+    data: {
+      name: string
+      value: number[]
+    }
+  }
 }
