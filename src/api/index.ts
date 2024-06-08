@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import {SignIn, User, Dashboard} from "@/types/api";
+import {SignIn, User, Dashboard, ResultData} from "@/types/api";
 
 export default {
   // 账号密码登录
@@ -29,4 +29,8 @@ export default {
   getRadarData() {
     return request.get<Dashboard.RadarData>('/order/dashboard/getRadarData')
   },
+  // 获取用户列表数据
+  getUserList() {
+    return request.get<ResultData<User.UserItem>>('/users/list')
+  }
 }

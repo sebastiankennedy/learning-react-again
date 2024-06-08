@@ -13,8 +13,24 @@ export interface Result<T = any> {
   msg: string
 }
 
+// 定义接口响应类型
+export interface ResultData<T = any> {
+  list: T[],
+  page: {
+    pageNum: number
+    pageSize: number
+    total: number | 0
+  }
+}
+
 // 用户类型
 export namespace User {
+  export interface Params {
+    userId?: number
+    userName?: string
+    state?: number
+  }
+
   export interface UserItem {
     _id: string,
     userId: number,

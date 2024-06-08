@@ -1,9 +1,22 @@
 import {Button, Form, Input, Select, Space, Table} from "antd";
 import {ColumnType} from "antd/es/table";
 import {User} from "@/types/api";
+import {useEffect, useState} from "react";
+import api from '@/api'
+import {formatDate} from "@/utils";
 
 export default function UserList() {
-  const dataSource = [
+  const [data, setData] = useState<User.UserItem[]>([])
+  const getUserList = async () => {
+    const data = await api.getUserList()
+    setData(data.list)
+  }
+
+  useEffect(() => {
+    getUserList()
+  }, []);
+
+  /*const dataSource = [
     {
       _id: '',
       userId: 0,
@@ -19,7 +32,7 @@ export default function UserList() {
       createId: 0,
       userImg: '',
     }
-  ]
+  ]*/
 
   const columns: ColumnType<User.UserItem> = [
     {
@@ -41,16 +54,34 @@ export default function UserList() {
       title: '用户角色',
       dataIndex: 'role',
       key: 'role',
+      render(role: number) {
+        return {
+          0: '超级管理员',
+          1: '管理员',
+          2: '体验管理员',
+          3: '普通用户'
+        }[role]
+      }
     },
     {
       title: '用户状态',
       dataIndex: 'state',
       key: 'state',
+      render(state:number) {
+        return {
+          1: '在职',
+          2: '离职',
+          3: '试用期'
+        }[state]
+      }
     },
     {
       title: '注册时间',
       dataIndex: 'createTime',
       key: 'createTime',
+      render(createTime: string) {
+        return formatDate(createTime)
+      }
     },
     {
       title: '操作',
@@ -104,11 +135,11 @@ export default function UserList() {
           </div>
           <div className="action">
             <Button type='primary'>新增</Button>
-            <Button type='primary' danger='true'>批量删除</Button>
+            <Button type='primary' danger={true}>批量删除</Button>
           </div>
         </div>
 
-        <Table dataSource={dataSource} columns={columns}/>
+        <Table bordered rowSelection={{type: 'checkbox'}} dataSource={data} columns={columns}/>
       </div>
     </div>
   )
