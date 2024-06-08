@@ -52,7 +52,7 @@ instance.interceptors.response.use(
     if (data.code === 500001) {
       message.error(data.msg)
       storage.remove('token')
-      // location.href = '/login'
+      location.href = '/login'
     } else if (data.code != 0) {
       // showError 为 false 时，由前端控制错误
       if (response.config.showError === false) {

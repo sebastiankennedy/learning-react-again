@@ -1,0 +1,29 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.search-form {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+  color: #000000;
+}
+.base-table{
+  background-color: #ffffff;
+  border-radius: 5px;
+  color: #000000;
+  .header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px 5px 0 0;
+    .action button {
+      margin-left: 15px;
+    }
+  }
+}
+
+.search-form + .base-table {
+  margin-top: 20px;
+}

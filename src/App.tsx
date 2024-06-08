@@ -1,7 +1,7 @@
 import { RouterProvider } from 'react-router'
 import { ConfigProvider, App as AntdApp } from 'antd'
 import router from './router'
-import './App.css'
+import './App.less'
 import AntdGlobal from "@/utils/AntdGlobal";
 
 function App() {
