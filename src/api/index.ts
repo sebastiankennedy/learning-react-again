@@ -31,6 +31,6 @@ export default {
   },
   // 获取用户列表数据
   getUserList(params: User.Params) {
-    return request.get<ResultData<User.UserItem>>('/users/list')
+    return request.get<ResultData<User.UserItem>>('/users/list', params)
   }
 }

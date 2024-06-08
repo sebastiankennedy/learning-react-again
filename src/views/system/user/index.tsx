@@ -14,6 +14,16 @@ export default function UserList() {
     current: 1,
     pageSize: 10,
   })
+
+  // 搜索
+  const handleSearch = () => {
+    // 搜索时必须从第一页开始，对比查询参数
+    getUserList({
+      pageNum: 1,
+      pageSize: pagination.pageSize
+    })
+  }
+
   const getUserList = async (params: PageParams) => {
     const values = form.getFieldsValue();
     const data = await api.getUserList({
@@ -29,19 +39,19 @@ export default function UserList() {
     })
 
     setData(list)
-    setTotal(data.page.pageNum)
+    setTotal(list.length)
     setPagination({
-      current: data.page.pageNum,
-      pageSize: data.page.pageSize
+      current: params.pageNum,
+      pageSize: params.pageSize
     })
   }
 
   useEffect(() => {
     getUserList({
-      pageNum: 1,
-      pageSize: 10
+      pageNum: pagination.current,
+      pageSize: pagination.pageSize
     })
-  }, []);
+  }, [pagination.current, pagination.pageSize]);
 
   /*const dataSource = [
     {
@@ -125,6 +135,7 @@ export default function UserList() {
     }
   ];
 
+
   return (
     <div className="user-list">
       <div className="search-form">
@@ -166,7 +177,32 @@ export default function UserList() {
           </div>
         </div>
 
-        <Table bordered rowSelection={{type: 'checkbox'}} rowKey='userId' dataSource={data} columns={columns}/>
+        <Table
+          bordered
+          rowSelection={{type: 'checkbox'}}
+          rowKey='userId'
+          dataSource={data}
+          columns={columns}
+          pagination={
+            {
+              position: ['bottomRight'],
+              current: pagination.current,
+              pageSize: pagination.pageSize,
+              total: total,
+              showQuickJumper: true,
+              showSizeChanger: true,
+              showTotal: function (total) {
+                return `总共 ${total}条`
+              },
+              onChange: (page, pageSize) => {
+                setPagination({
+                  current: page,
+                  pageSize: pageSize
+                })
+              }
+            }
+          }
+        />
       </div>
     </div>
   )
