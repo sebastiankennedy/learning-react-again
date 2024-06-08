@@ -23,9 +23,15 @@ export interface ResultData<T = any> {
   }
 }
 
+// 定义接口分页参数
+export interface PageParams {
+  pageNum: number
+  pageSize: number
+}
+
 // 用户类型
 export namespace User {
-  export interface Params {
+  export interface Params extends PageParams{
     userId?: number
     userName?: string
     state?: number

@@ -1,19 +1,46 @@
 import {Button, Form, Input, Select, Space, Table} from "antd";
 import {ColumnType} from "antd/es/table";
-import {User} from "@/types/api";
+import {PageParams, User} from "@/types/api";
 import {useEffect, useState} from "react";
 import api from '@/api'
 import {formatDate} from "@/utils";
 
 export default function UserList() {
+  // 实例化查询表单
+  const [form] = Form.useForm()
   const [data, setData] = useState<User.UserItem[]>([])
-  const getUserList = async () => {
-    const data = await api.getUserList()
-    setData(data.list)
+  const [total, setTotal] = useState(0)
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+  })
+  const getUserList = async (params: PageParams) => {
+    const values = form.getFieldsValue();
+    const data = await api.getUserList({
+      ...values,
+      pageNum: params.pageNum,
+      pageSize: pagination.pageSize
+    })
+
+    const list = Array.from({length: 50}).fill({}).map((item: any) => {
+      item = {...data.list[0]}
+      item.userId = Math.random()
+      return item
+    })
+
+    setData(list)
+    setTotal(data.page.pageNum)
+    setPagination({
+      current: data.page.pageNum,
+      pageSize: data.page.pageSize
+    })
   }
 
   useEffect(() => {
-    getUserList()
+    getUserList({
+      pageNum: 1,
+      pageSize: 10
+    })
   }, []);
 
   /*const dataSource = [
@@ -67,7 +94,7 @@ export default function UserList() {
       title: '用户状态',
       dataIndex: 'state',
       key: 'state',
-      render(state:number) {
+      render(state: number) {
         return {
           1: '在职',
           2: '离职',
@@ -101,7 +128,7 @@ export default function UserList() {
   return (
     <div className="user-list">
       <div className="search-form">
-        <Form className='search-form' layout='inline' initialValues={{state: 0}}>
+        <Form className='search-form' form={form} layout='inline' initialValues={{state: 0}}>
           <Form.Item name='userId' label='用户ID'>
             <Input placeholder='请输入用户ID'/>
           </Form.Item>
@@ -139,7 +166,7 @@ export default function UserList() {
           </div>
         </div>
 
-        <Table bordered rowSelection={{type: 'checkbox'}} dataSource={data} columns={columns}/>
+        <Table bordered rowSelection={{type: 'checkbox'}} rowKey='userId' dataSource={data} columns={columns}/>
       </div>
     </div>
   )
