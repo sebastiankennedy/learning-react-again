@@ -13,6 +13,7 @@ const {Header, Content, Footer, Sider} = Layout
 
 const App: React.FC = () => {
   const updateUserInfo = useStore(state => state.updateUserInfo)
+  const collapsed = useStore(state => state.collapsed)
   const getUserInfo = async () => {
     const data = await api.getUserInfo()
     updateUserInfo(data)
@@ -25,7 +26,7 @@ const App: React.FC = () => {
   return (
     <Watermark content="React">
       <Layout>
-        <Sider>
+        <Sider collapsed={collapsed}>
           <SideMenu/>
         </Sider>
         <Layout>

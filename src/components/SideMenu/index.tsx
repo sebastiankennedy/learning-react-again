@@ -3,8 +3,10 @@ import {DesktopOutlined, SettingOutlined, TeamOutlined} from '@ant-design/icons'
 import styles from './index.module.less'
 import {useNavigate} from 'react-router-dom'
 import Logo from '@/assets/logo.png'
+import {useStore} from "@/store";
 
 const SideMenu = () => {
+  const collapsed = useStore(state => state.collapsed)
   const navigate = useNavigate()
   const items = [
     {
@@ -32,10 +34,12 @@ const SideMenu = () => {
   return (
     <div>
       <div className={styles.logo} onClick={handleClickLogo}>
-        <img src={Logo} className={styles.img}/>
-        <span>慕慕货运</span>
+        <img src={Logo} className={styles.img} />
+        {collapsed ?  '' : <span>慕慕货运</span>}
       </div>
-      <Menu defaultSelectedKeys={['1']} mode='inline' theme='dark' items={items}/>
+      <Menu defaultSelectedKeys={['1']} mode='inline' theme='dark' items={items}
+            style={{width: collapsed ? '80': 'auto'}}
+      />
     </div>
   )
 }
