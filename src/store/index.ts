@@ -6,6 +6,8 @@ export const useStore = create<{
   userInfo: User.UserItem,
   updateToken: (token: string) => void,
   updateUserInfo: (userInfo: User.UserItem) => void,
+  collapsed: boolean,
+  updateCollapsed: () => void
 }>(set => ({
   token: '',
   userInfo: {
@@ -25,4 +27,11 @@ export const useStore = create<{
   },
   updateToken: token => set({token}),
   updateUserInfo: (userInfo: User.UserItem) => set({userInfo}),
+  collapsed: true,
+  updateCollapsed: () =>
+    set(state => {
+      return {
+        collapsed: !state.collapsed
+      }
+    })
 }))
