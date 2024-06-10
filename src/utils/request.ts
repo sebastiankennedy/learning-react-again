@@ -5,7 +5,6 @@ import env from '@/config'
 import {Result} from '@/types/api'
 import {message} from './AntdGlobal'
 
-console.log('config', env)
 
 // 创建实例
 const instance = axios.create({
@@ -22,6 +21,8 @@ const instance = axios.create({
 instance.interceptors.request.use(
   config => {
     if (config.showLoading) showLoading()
+
+    console.log('config', env)
 
     const token = storage.get('token')
     if (token) {
@@ -47,6 +48,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   response => {
     const data: Result = response.data
+    console.log('响应拦截器', response)
     hideLoading()
 
     if (data.code === 500001) {

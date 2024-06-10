@@ -1,22 +1,55 @@
 import {Form, Input, Modal, Select, Upload, UploadFile, UploadProps} from "antd";
-import {useState} from "react";
+import {useImperativeHandle, useState} from "react";
 import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import storage from "@/utils/storage";
 import {RcFile, UploadChangeParam} from "antd/es/upload";
 import {message} from "@/utils/AntdGlobal";
+import {IAction, IModalProp} from "@/types/modal";
+import {User} from "@/types/api";
+import api from "@/api";
 
-const CreateUser = () => {
+const CreateUser = (props: IModalProp) => {
   const [form] = Form.useForm()
+  const [visible, setVisible] = useState<boolean>(false)
+  const [action, setAction] = useState<IAction>()
   const [img, setImg] = useState('')
   const [loading, setLoading] = useState(false)
 
+  useImperativeHandle(props.mRef, () => {
+    return {
+      // 暴漏子组件 open 方法
+      open
+    }
+  })
+
+  // 调用弹框显示方法
+  const open = (type: IAction, data?: User.UserItem) => {
+    setAction(type)
+    setVisible(true)
+  }
   const handleSubmit = async () => {
     const valid = await form.validateFields()
     console.log(valid)
+    if (valid) {
+
+      const params = {
+        ...form.getFieldsValue(),
+        userImg: img
+      }
+
+      if (action === 'create') {
+        const data = await api.createUser(params)
+        console.log('用户创建', data)
+        message.success('创建成功')
+        await handleCancel()
+        props.update()
+      }
+    }
   }
 
   const handleCancel = async () => {
-
+    setVisible(false)
+    form.resetFields()
   }
 
   // 上传头像之前，接口处理
@@ -62,7 +95,7 @@ const CreateUser = () => {
     <Modal
       title="创建用户"
       width={800}
-      open={true}
+      open={visible}
       onOk={handleSubmit}
       onCancel={handleCancel}
       okText={'确定'}
@@ -81,7 +114,7 @@ const CreateUser = () => {
           <Input type={'number'} placeholder='请输入手机号码'></Input>
         </Form.Item>
 
-        <Form.Item label="部门" name={'deptId'} rules={[{required: true, message: '请输入部门'}]}>
+        <Form.Item label="部门" name={'deptId'}>
           <Input placeholder='请输入部门'></Input>
         </Form.Item>
 
@@ -116,7 +149,7 @@ const CreateUser = () => {
             onChange={handleChange}
           >
             {img ? (
-              <img src={img} style={{width: '100%'}}/>
+              <img src={img} style={{width: '100%', borderRadius: '100%'}}/>
             ) : (
               <div>
                 {loading ? <LoadingOutlined/> : <PlusOutlined/>}

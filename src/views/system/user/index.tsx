@@ -1,15 +1,19 @@
 import {PageParams, User} from '@/types/api'
 import {Button, Table, Form, Input, Select, Space} from 'antd'
 import type {ColumnsType} from 'antd/es/table'
-import {useEffect, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import api from '@/api'
 import {formatDate} from '@/utils'
 import CreateUser from "@/views/system/user/CreateUser";
+import {IAction} from "@/types/modal";
 
 export default function UserList() {
   const [form] = Form.useForm()
   const [data, setData] = useState<User.UserItem[]>([])
   const [total, setTotal] = useState(0)
+  const userRef = useRef<{
+    open: (type: IAction, data?: User.UserItem) => void | undefined
+  }>()
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10
@@ -44,19 +48,27 @@ export default function UserList() {
     })
 
     // 填充数据
-    const list = Array.from({length: 50})
-      .fill({})
-      .map((item: any) => {
-        item = {...data.list[0]}
-        item.userId = Math.random()
-        return item
-      })
-    setData(list)
-    setTotal(list.length)
+    // const list = Array.from({length: 50})
+    //   .fill({})
+    //   .map((item: any) => {
+    //     item = {...data.list[0]}
+    //     item.userId = Math.random()
+    //     return item
+    //   })
+    setData(data.list)
+    setTotal(data.list.length)
     setPagination({
       current: data.page.pageNum,
       pageSize: data.page.pageSize
     })
+  }
+
+  const handleCreate =  () => {
+    userRef.current?.open('create', )
+  }
+
+  const handleEdit = () => {
+    userRef.current?.open('edit', undefined)
   }
 
   const columns: ColumnsType<User.UserItem> = [
@@ -156,7 +168,7 @@ export default function UserList() {
         <div className='header-wrapper'>
           <div className='title'>用户列表</div>
           <div className='action'>
-            <Button type='primary'>新增</Button>
+            <Button type='primary' onClick={handleCreate}>新增</Button>
             <Button type='primary' danger>
               批量删除
             </Button>
@@ -187,7 +199,12 @@ export default function UserList() {
           }}
         />
       </div>
-      <CreateUser />
+      <CreateUser mRef={userRef} update={() => {
+        getUserList({
+          pageNum: 1,
+          pageSize: pagination.pageSize
+        })
+      }} />
     </div>
   )
 }

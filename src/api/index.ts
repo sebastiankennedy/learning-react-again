@@ -11,7 +11,7 @@ export default {
     return request.get<User.UserItem>('/users/getUserInfo')
   },
   // 获取工作台汇总数据
-  getReportData () {
+  getReportData() {
     return request.get<Dashboard.ReportData>('/order/dashboard/getReportData')
   },
   // 获取折线图数据
@@ -32,5 +32,9 @@ export default {
   // 获取用户列表数据
   getUserList(params: User.Params) {
     return request.get<ResultData<User.UserItem>>('/users/list', params)
+  },
+  // 创建用户
+  createUser(params: User.CreateParams) {
+    return request.post('/users/create', params)
   }
 }
