@@ -1,16 +1,18 @@
 import {PageParams, User} from '@/types/api'
-import {Button, Table, Form, Input, Select, Space} from 'antd'
+import {Button, Table, Form, Input, Select, Space, Modal} from 'antd'
 import type {ColumnsType} from 'antd/es/table'
-import {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import api from '@/api'
 import {formatDate} from '@/utils'
 import CreateUser from "@/views/system/user/CreateUser";
 import {IAction} from "@/types/modal";
+import {message} from "@/utils/AntdGlobal";
 
 export default function UserList() {
   const [form] = Form.useForm()
   const [data, setData] = useState<User.UserItem[]>([])
   const [total, setTotal] = useState(0)
+  const [userIds, setUserIds] = useState<number[]>([])
   const userRef = useRef<{
     open: (type: IAction, data?: User.UserItem) => void | undefined
   }>()
@@ -64,14 +66,58 @@ export default function UserList() {
   }
 
   // 创建用户
-  const handleCreate =  () => {
-    userRef.current?.open('create', )
+  const handleCreate = () => {
+    userRef.current?.open('create',)
   }
 
 
   // 编辑用户
   const handleEdit = (record: User.UserItem) => {
     userRef.current?.open('edit', record)
+  }
+
+  // 删除用户
+  const handleDel = (userId: number) => {
+    Modal.confirm({
+      title: '删除确认',
+      content: <span>确认删除该用户？</span>,
+      onOk: () => {
+        handleUserDelSubmit([userId])
+      }
+    })
+  }
+
+  // 批量删除确认
+  const handlePatchConfirm = () => {
+    if (userIds.length === 0) {
+      message.error('请选择要删除的用户')
+      return
+    }
+
+    Modal.confirm({
+      title: '删除确认',
+      content: <span>确认删除该用户？</span>,
+      onOk: () => {
+        handleUserDelSubmit(userIds)
+      }
+    })
+  }
+
+  // 公用删除用户接口
+  const handleUserDelSubmit = async (ids: number[]) => {
+    try {
+      const data = await api.delUser({
+        userIds: ids
+      })
+      message.success('删除成功')
+      setUserIds([])
+      getUserList({
+        pageNum: 1,
+        pageSize: pagination.pageSize
+      })
+    } catch (error) {
+
+    }
   }
 
   const columns: ColumnsType<User.UserItem> = [
@@ -132,7 +178,7 @@ export default function UserList() {
         return (
           <Space>
             <Button type='text' onClick={() => handleEdit(record)}>编辑</Button>
-            <Button type='text' danger>
+            <Button type='text' danger onClick={() => handleDel(record.userId)}>
               删除
             </Button>
           </Space>
@@ -173,7 +219,7 @@ export default function UserList() {
           <div className='title'>用户列表</div>
           <div className='action'>
             <Button type='primary' onClick={handleCreate}>新增</Button>
-            <Button type='primary' danger>
+            <Button type='primary' danger onClick={handlePatchConfirm}>
               批量删除
             </Button>
           </div>
@@ -181,7 +227,15 @@ export default function UserList() {
         <Table
           bordered
           rowKey='userId'
-          rowSelection={{type: 'checkbox'}}
+          rowSelection={
+            {
+              type: 'checkbox',
+              selectedRowKeys: userIds,
+              onChange: (selectedRowKeys: React.Key[]) => {
+                setUserIds(selectedRowKeys as number[])
+              }
+            }
+          }
           dataSource={data}
           columns={columns}
           pagination={{
@@ -208,7 +262,7 @@ export default function UserList() {
           pageNum: 1,
           pageSize: pagination.pageSize
         })
-      }} />
+      }}/>
     </div>
   )
 }

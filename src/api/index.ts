@@ -40,5 +40,9 @@ export default {
   // 更新用户
   editUser(params: User.EditParams) {
     return request.post('/users/edit', params)
+  },
+  // 删除和批量删除用户
+  delUser(params: {userIds: number[]}) {
+    return request.post('/users/delete', params)
   }
 }
