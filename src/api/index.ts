@@ -36,5 +36,9 @@ export default {
   // 创建用户
   createUser(params: User.CreateParams) {
     return request.post('/users/create', params)
+  },
+  // 更新用户
+  editUser(params: User.EditParams) {
+    return request.post('/users/edit', params)
   }
 }

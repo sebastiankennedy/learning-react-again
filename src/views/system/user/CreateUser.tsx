@@ -26,6 +26,10 @@ const CreateUser = (props: IModalProp) => {
   const open = (type: IAction, data?: User.UserItem) => {
     setAction(type)
     setVisible(true)
+    if (type === 'edit' && data) {
+      form.setFieldsValue(data)
+      setImg(data.userImg)
+    }
   }
   const handleSubmit = async () => {
     const valid = await form.validateFields()
@@ -41,9 +45,14 @@ const CreateUser = (props: IModalProp) => {
         const data = await api.createUser(params)
         console.log('用户创建', data)
         message.success('创建成功')
-        await handleCancel()
         props.update()
+      } else {
+        const data = await api.editUser(params)
+        console.log('用户更新', data)
+        message.success('更新成功')
       }
+      await handleCancel()
+
     }
   }
 
@@ -102,6 +111,9 @@ const CreateUser = (props: IModalProp) => {
       cancelText={'取消'}
     >
       <Form form={form} labelCol={{span: 4}} labelAlign='right'>
+        <Form.Item name={'userId'} style={{display: "none"}}>
+          <Input />
+        </Form.Item>
         <Form.Item label="用户名称" name={'userName'} rules={[{required: true, message: '请输入用户名称'}]}>
           <Input placeholder='请输入用户名称'></Input>
         </Form.Item>
@@ -149,7 +161,7 @@ const CreateUser = (props: IModalProp) => {
             onChange={handleChange}
           >
             {img ? (
-              <img src={img} style={{width: '100%', borderRadius: '100%'}}/>
+              <img src={img} style={{width: '100%', borderRadius: '100%'}} alt={''}/>
             ) : (
               <div>
                 {loading ? <LoadingOutlined/> : <PlusOutlined/>}

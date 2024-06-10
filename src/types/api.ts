@@ -31,7 +31,7 @@ export interface PageParams {
 
 // 用户类型
 export namespace User {
-  export interface Params extends PageParams{
+  export interface Params extends PageParams {
     userId?: number
     userName?: string
     state?: number
@@ -62,6 +62,10 @@ export namespace User {
     state?: number
     roleList?: string[]
     userImg: string
+  }
+
+  export interface EditParams extends CreateParams {
+    userId: number
   }
 }
 
