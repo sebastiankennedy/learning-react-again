@@ -1,7 +1,14 @@
-import {Form, Input, Modal, Select} from "antd";
+import {Form, Input, Modal, Select, Upload, UploadFile, UploadProps} from "antd";
+import {useState} from "react";
+import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
+import storage from "@/utils/storage";
+import {RcFile, UploadChangeParam} from "antd/es/upload";
+import {message} from "@/utils/AntdGlobal";
 
 const CreateUser = () => {
   const [form] = Form.useForm()
+  const [img, setImg] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async () => {
     const valid = await form.validateFields()
@@ -9,6 +16,45 @@ const CreateUser = () => {
   }
 
   const handleCancel = async () => {
+
+  }
+
+  // 上传头像之前，接口处理
+  const beforeUpload = async (file: RcFile) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!')
+    }
+
+    const isLt500k = file.size / 1024 / 1024 < 0.5
+    if (!isLt500k) {
+      message.error('Image must smaller than 2MB!')
+    }
+
+    return isJpgOrPng && isLt500k
+  }
+
+  // 上传之后，图片处理
+  const handleChange: UploadProps['onChange'] = async (info: UploadChangeParam<UploadFile>) => {
+    if (info.file.status === 'uploading') {
+      setLoading(true)
+      return
+    }
+
+    if (info.file.status === 'done') {
+      setLoading(false)
+      const {code, data, message} = info.file.response
+      if (code === 0) {
+        setImg(data.file)
+      } else {
+        message.error(message)
+      }
+      return
+    } else if (info.file.status === 'error') {
+      setLoading(false)
+      message.error('服务器异常，请稍后重试')
+    }
+
 
   }
 
@@ -53,6 +99,32 @@ const CreateUser = () => {
 
         <Form.Item label={'角色'} name={'roleList'}>
           <Input placeholder={'请输入角色'}></Input>
+        </Form.Item>
+
+        <Form.Item label={'用户头像'}>
+          <Upload
+            listType={'picture-circle'}
+            showUploadList={false}
+            headers={
+              {
+                Authorization: 'Bearer ' + storage.get('token'),
+                icode: '5050DF22A6E30E29'
+              }
+            }
+            action={'/api/users/upload'}
+            beforeUpload={beforeUpload}
+            onChange={handleChange}
+          >
+            {img ? (
+              <img src={img} style={{width: '100%'}}/>
+            ) : (
+              <div>
+                {loading ? <LoadingOutlined/> : <PlusOutlined/>}
+                <div style={{marginTop: 5}}>上传头像</div>
+              </div>
+            )}
+
+          </Upload>
         </Form.Item>
       </Form>
 
