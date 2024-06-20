@@ -2,6 +2,7 @@ import {Button, Form, Input, Space, Table} from "antd";
 import {useEffect, useState} from "react";
 import api from "@/api";
 import {Dept} from "@/types/api";
+import CreateDept from "@/views/system/dept/CreateDept";
 
 export default function DeptList() {
   const [form] = Form.useForm();
@@ -80,6 +81,8 @@ export default function DeptList() {
         </div>
         <Table bordered rowKey={'_id'} columns={columns} dataSource={data} pagination={false}/>
       </div>
+
+      <CreateDept />
     </div>
   )
 }
