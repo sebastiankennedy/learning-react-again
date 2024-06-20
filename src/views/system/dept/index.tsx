@@ -1,13 +1,16 @@
 import {Button, Form, Input, Space, Table} from "antd";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import api from "@/api";
 import {Dept} from "@/types/api";
 import CreateDept from "@/views/system/dept/CreateDept";
+import {IAction} from "@/types/modal";
+import {ColumnsType} from "antd/es/table";
 
 export default function DeptList() {
   const [form] = Form.useForm();
   const [data, setData] = useState<Dept.DeptItem[]>([]);
-  const columns = [
+
+  const columns:ColumnsType<Dept.DeptItem> = [
     {
       title: '部门名称',
       dataIndex: 'deptName',
@@ -34,17 +37,21 @@ export default function DeptList() {
       title: '操作',
       key: 'action',
       width: 200,
-      render() {
+      render(_, record) {
         return (
           <Space>
             <Button>新增</Button>
-            <Button>编辑</Button>
+            <Button onClick={() => handleEdit(record)}>编辑</Button>
             <Button>删除</Button>
           </Space>
         )
       }
     }
   ]
+
+  const deptRef = useRef<{
+    open: (type: IAction, data?: Dept.EditParams | {parentId: string}) => void
+  }>()
 
   useEffect(() => {
     getDeptList()
@@ -57,6 +64,14 @@ export default function DeptList() {
 
   const handleReset = () => {
     form.resetFields()
+  }
+
+  const handleCreate = () => {
+    deptRef.current?.open('create')
+  }
+
+  const handleEdit = (record: Dept.DeptItem) => {
+    deptRef.current?.open('edit', record)
   }
 
   return (
@@ -76,13 +91,13 @@ export default function DeptList() {
         <div className={'header-wrapper'}>
           <div className={'title'}>部门列表</div>
           <div className={'action'}>
-            <Button>新增</Button>
+            <Button type={'primary'} onClick={handleCreate}>新增</Button>
           </div>
         </div>
         <Table bordered rowKey={'_id'} columns={columns} dataSource={data} pagination={false}/>
       </div>
 
-      <CreateDept />
+      <CreateDept mRef={deptRef} update={getDeptList}/>
     </div>
   )
 }

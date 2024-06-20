@@ -1,19 +1,38 @@
 import {Form, Input, Modal, Select, TreeSelect} from "antd";
-import {useState} from "react";
-import {IAction} from "@/types/modal";
+import {useImperativeHandle, useState} from "react";
+import {IAction, IModalProp} from "@/types/modal";
 import {Dept} from "@/types/api";
 
-export default function CreateDept() {
+export default function CreateDept(props: IModalProp) {
   const [form] = Form.useForm();
   const [action, setAction] = useState<IAction>('create')
+  const [visible, setVisible] = useState<boolean>(false)
   const [deptList, setDeptList] = useState<Dept.DeptItem[]>([])
+
+  // 暴露 open 方法
+  useImperativeHandle(props.mRef, () => ({
+   open
+  }))
+
+  // 暴露 open 方法之后，还需要定义 open 方法，打开弹窗函数
+  const open = (type: IAction, data?: Dept.EditParams | {parentId: string}) => {
+    setAction(type)
+    setVisible(true)
+
+    if (type === 'edit' && data) {
+      form.setFieldsValue(data)
+    }
+  }
   const handleSubmit = () => {}
-  const handleCancel = () => {}
+  const handleCancel = () => {
+    setVisible(false)
+    form.resetFields()
+  }
   return (
     <Modal
       title={action === 'create' ? '创建用户': '编辑用户'}
       width={800}
-      open={true}
+      open={visible}
       okText={'确定'}
       cancelText={'取消'}
       onOk={handleSubmit}
