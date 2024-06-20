@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import {SignIn, User, Dashboard, ResultData} from "@/types/api";
+import {SignIn, User, Dashboard, ResultData, Dept} from "@/types/api";
 
 export default {
   // 账号密码登录
@@ -44,5 +44,12 @@ export default {
   // 删除和批量删除用户
   delUser(params: {userIds: number[]}) {
     return request.post('/users/delete', params)
+  },
+  /*
+   * 部门管理
+   */
+  // 部门列表
+  getDeptList(params: Dept.Params) {
+    return request.get<Dept.DeptItem[]>('/dept/list', params)
   }
 }

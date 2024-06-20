@@ -23,6 +23,11 @@ const SideMenu = () => {
           label: '用户管理',
           key: '3',
           icon: <TeamOutlined/>
+        },
+        {
+          label: '部门管理',
+          key: ' 4',
+          icon: <TeamOutlined/>
         }
       ]
     }

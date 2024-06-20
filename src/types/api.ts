@@ -29,6 +29,23 @@ export interface PageParams {
   pageSize: number
 }
 
+// 部门管理
+  export namespace Dept {
+    export interface Params {
+      deptName?:string
+    }
+
+    export interface DeptItem {
+      _id: string
+      createTime: string
+      updateTIme: string
+      deptName: string
+      parentId: string
+      userName: string
+      children: DeptItem[]
+    }
+  }
+
 // 用户类型
 export namespace User {
   export interface Params extends PageParams {
