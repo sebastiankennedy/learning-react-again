@@ -31,19 +31,22 @@ export interface PageParams {
 
 // 部门管理
   export namespace Dept {
-    import CreateParams = User.CreateParams;
 
     export interface Params {
       deptName?:string
     }
 
-    export interface createParams {
+    export interface CreateParams {
       deptName:string
       parentId?: string
       userName: string
     }
 
     export interface EditParams extends CreateParams{
+      _id: string
+    }
+
+    export interface DelParams {
       _id: string
     }
 
