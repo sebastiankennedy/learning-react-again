@@ -132,3 +132,36 @@ export namespace Dashboard {
     }
   }
 }
+
+export namespace Menu {
+  export interface Params {
+    menuName: string
+    menuStatus: number
+  }
+
+  export interface CreateParams {
+    menuName: string
+    icon?: string
+    menuType: number
+    menuState: number
+    menuCode?: string
+    parentId?: string
+    path?: string
+    component?: string
+  }
+
+  export interface EditParams extends CreateParams{
+    _id: string
+  }
+
+  export interface DelParams {
+    _id: string
+  }
+
+  export interface MenuItem extends CreateParams{
+    _id: string
+    createTime: string
+    buttons?: MenuItem[]
+    children?: MenuItem[]
+  }
+}

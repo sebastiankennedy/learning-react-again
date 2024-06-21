@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import {SignIn, User, Dashboard, ResultData, Dept} from "@/types/api";
+import {SignIn, User, Dashboard, ResultData, Dept, Menu} from "@/types/api";
 
 export default {
   // 账号密码登录
@@ -67,5 +67,12 @@ export default {
   // 删除部门
   deleteDept(params: Dept.DelParams) {
     return request.post('/dept/delete', params)
+  },
+  // 菜单管理
+  getMenuList(params?: Menu.Params) {
+    return request.get<Menu.MenuItem[]>('/menu/list', params)
+  },
+  deleteMenu(params: Menu.DelParams) {
+    return request.post('/menu/delete', params)
   }
 }
