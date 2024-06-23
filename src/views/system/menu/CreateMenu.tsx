@@ -4,13 +4,13 @@ import {IAction, IModalProp} from "@/types/modal";
 import {Menu} from "@/types/api";
 import api from "@/api";
 import {message} from "@/utils/AntdGlobal";
-import {InfoCircleFilled, InfoCircleOutlined} from "@ant-design/icons";
+import {InfoCircleOutlined} from "@ant-design/icons";
 
 export default function CreateMenu(props: IModalProp) {
   const [form] = Form.useForm();
   const [action, setAction] = useState<IAction>('create')
   const [visible, setVisible] = useState<boolean>(false)
-  const [deptList, setMenuList] = useState<Menu.MenuItem[]>([])
+  const [MenuList, setMenuList] = useState<Menu.MenuItem[]>([])
 
   useEffect(() => {
     getMenuList()
@@ -73,7 +73,7 @@ export default function CreateMenu(props: IModalProp) {
           allowClear
           treeDefaultExpandAll
           fieldNames={{label: 'menuName', value: '_id'}}
-          treeData={deptList}
+          treeData={MenuList}
         ></TreeSelect>
       </Form.Item>
 

@@ -8,6 +8,7 @@ import Layout from "@/layout"
 import Index from "@/views/welcome"
 import UserList from "@/views/system/user"
 import MenuList from "@/views/system/menu";
+import AuthLoader from "@/router/AuthLoader";
 
 const router = [
   {
@@ -31,7 +32,9 @@ const router = [
     element: <Navigate to='/welcome' />
   },
   {
+    id: 'layout',
     element: <Layout />,
+    loader: AuthLoader,
     children: [
       {
         path: '/welcome',

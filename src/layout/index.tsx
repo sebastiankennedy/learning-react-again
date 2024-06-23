@@ -4,7 +4,7 @@ import {Layout, theme, Watermark} from 'antd'
 import NavHeader from "@/components/NavHeader";
 import NavFooter from "@/components/NavFooter";
 import SideMenu from "@/components//SideMenu";
-import {Outlet} from "react-router-dom";
+import {Outlet, useRouteLoaderData} from "react-router-dom";
 import styles from './index.module.less'
 import api from "@/api";
 import {useStore} from "@/store";
@@ -22,6 +22,9 @@ const App: React.FC = () => {
   useEffect(() => {
     getUserInfo();
   }, []);
+
+  const data = useRouteLoaderData('layout')
+  console.log(data)
 
   return (
     <Watermark content="React">

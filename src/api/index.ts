@@ -80,5 +80,9 @@ export default {
   },
   editMenu(params: Menu.EditParams) {
     return request.post('/menu/edit', params)
+  },
+  // 获取权限列表
+  getPermissionList() {
+    return request.get<{buttonList:string[], menuList: Menu.MenuItem[]}>('/users/getPermissionList')
   }
 }
