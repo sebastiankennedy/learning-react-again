@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 import Error403 from '@/views/403'
 import Error404 from '@/views/404'
 import Login from '@/views/login/Login'
-import Dept from '@/views/system/dept'
+import DeptList from '@/views/system/dept'
 import DashBoard from "@/views/dashboard"
 import Layout from "@/layout"
 import Index from "@/views/welcome"
@@ -47,7 +47,7 @@ const router = [
       },
       {
         path: '/deptList',
-        element: <Dept />
+        element: <DeptList />
       },
       {
         path: '/menuList',

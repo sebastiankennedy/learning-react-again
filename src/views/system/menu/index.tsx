@@ -43,7 +43,7 @@ export default function MenuList() {
   }]
 
   const menuRef = useRef<{
-    open: (type: IAction, data?: Menu.EditParams | { parentId: string }) => void
+    open: (type: IAction, data?: Menu.EditParams | { parentId: string} | {orderBy: number}) => void
   }>()
 
   useEffect(() => {
@@ -60,7 +60,9 @@ export default function MenuList() {
   }
 
   const handleCreate = () => {
-    menuRef.current?.open('create')
+    menuRef.current?.open('create', {
+      orderBy: data.length
+    })
   }
 
   const handleSubCreate = (id: string) => {

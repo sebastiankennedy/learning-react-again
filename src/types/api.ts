@@ -148,6 +148,7 @@ export namespace Menu {
     parentId?: string
     path?: string
     component?: string
+    orderBy: number
   }
 
   export interface EditParams extends CreateParams{

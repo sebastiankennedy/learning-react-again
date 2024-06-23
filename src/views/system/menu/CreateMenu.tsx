@@ -27,7 +27,7 @@ export default function CreateMenu(props: IModalProp) {
   }))
 
   // 暴露 open 方法之后，还需要定义 open 方法，打开弹窗函数
-  const open = (type: IAction, data?: Menu.EditParams | { parentId: string }) => {
+  const open = (type: IAction, data?: Menu.EditParams | { parentId: string } | { orderBy: number}  ) => {
     setAction(type)
     setVisible(true)
     getMenuList()
@@ -112,7 +112,7 @@ export default function CreateMenu(props: IModalProp) {
         <Input placeholder={'请输入组件名称'}/>
       </Form.Item>
 
-      <Form.Item label={'排序'} name={'sort'} tooltip={{title: '排序值越大越靠后', icon: <InfoCircleOutlined rev={undefined}/>}}>
+      <Form.Item label={'排序'} name={'orderBy'} tooltip={{title: '排序值越大越靠后', icon: <InfoCircleOutlined rev={undefined}/>}}>
         <InputNumber placeholder={'请输入排序'}/>
       </Form.Item>
 
