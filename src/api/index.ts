@@ -74,5 +74,11 @@ export default {
   },
   deleteMenu(params: Menu.DelParams) {
     return request.post('/menu/delete', params)
+  },
+  createMenu(params: Menu.CreateParams) {
+    return request.post('/menu/create', params)
+  },
+  editMenu(params: Menu.EditParams) {
+    return request.post('/menu/edit', params)
   }
 }

@@ -6,6 +6,7 @@ import {IAction} from "@/types/modal";
 import {ColumnsType} from "antd/es/table";
 import {message} from "@/utils/AntdGlobal";
 import {formatDate} from "@/utils";
+import CreateMenu from "@/views/system/menu/CreateMenu";
 
 export default function MenuList() {
   const [form] = Form.useForm();
@@ -112,6 +113,8 @@ export default function MenuList() {
       </div>
       <Table bordered rowKey={'_id'} columns={columns} dataSource={data} pagination={false}/>
     </div>
+
+    <CreateMenu mRef={menuRef} update={getMenuList} />
 
   </div>)
 }

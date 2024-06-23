@@ -60,7 +60,7 @@ export default function CreateDept(props: IModalProp) {
     form.resetFields()
   }
   return (<Modal
-      title={action === 'create' ? '创建用户' : '编辑用户'}
+      title={action === 'create' ? '创建部门' : '编辑部门'}
       width={800}
       open={visible}
       okText={'确定'}
