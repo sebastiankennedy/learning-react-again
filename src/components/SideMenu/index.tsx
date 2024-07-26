@@ -1,10 +1,10 @@
 import {Menu} from 'antd'
 import {DesktopOutlined, SettingOutlined, TeamOutlined} from '@ant-design/icons'
 import styles from './index.module.less'
-import {useNavigate, useRouteLoaderData} from 'react-router-dom'
+import {useLocation, useNavigate, useRouteLoaderData} from 'react-router-dom'
 import Logo from '@/assets/logo.png'
 import {useStore} from "@/store";
-import type {MenuProps, MenuTheme} from 'antd/lib/menu';
+import type {MenuProps} from 'antd/lib/menu';
 import React, {useEffect, useState} from "react";
 import {Menu as IMenu} from 'src/types/api'
 import * as Icons from '@ant-design/icons'
@@ -13,8 +13,10 @@ const SideMenu = () => {
   const [menuList, setMenuList] = useState<MenuItem[]>([])
   const navigate = useNavigate()
   const collapsed = useStore(state => state.collapsed)
-  const data:any = useRouteLoaderData('layout')
+  const data: any = useRouteLoaderData('layout')
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([])
 
+  const {pathname} = useLocation()
   const items = [
     {
       label: '工作台',
@@ -42,15 +44,16 @@ const SideMenu = () => {
 
   function createIcon(name?: string) {
     if (!name) return <></>
-    const customerIcons:{[key: string]: any} = Icons;
+    const customerIcons: { [key: string]: any } = Icons;
     const icon = customerIcons[name]
     if (!icon) return <></>
     return React.createElement(icon)
   }
+
   // 递归生成菜单
   const getTreeMenu = (menuList: IMenu.MenuItem[], treeList: MenuItem[] = []) => {
-    menuList.forEach((item,index) => {
-      if (item.menuType === 1 ) {
+    menuList.forEach((item, index) => {
+      if (item.menuType === 1) {
         // 存在按钮，证明是末级菜单了
         if (item.buttons) {
           return treeList.push(
@@ -76,12 +79,14 @@ const SideMenu = () => {
   }
 
   // 初始化，获取接口菜单列表数据
-  useEffect(()=>{
-    const treeMenuList= getTreeMenu(data.menuList)
+  useEffect(() => {
+    const treeMenuList = getTreeMenu(data.menuList)
     setMenuList(treeMenuList)
+    setSelectedKeys([pathname])
   }, [])
 
   type MenuItem = Required<MenuProps>['items'][number]
+
   // 生成每一个菜单组件
   function getItem(
     label: React.ReactNode,
@@ -101,14 +106,24 @@ const SideMenu = () => {
     navigate('/welcome')
   }
 
+  // 点击菜单跳转
+  const handleClickMenu = ({key}: { key: string }) => {
+    setSelectedKeys([key])
+    navigate(key)
+  }
+
   return (
     <div>
       <div className={styles.logo} onClick={handleClickLogo}>
-        <img src={Logo} className={styles.img} />
-        {collapsed ?  '' : <span>慕慕货运</span>}
+        <img src={Logo} className={styles.img} alt={''}/>
+        {collapsed ? '' : <span>慕慕货运</span>}
       </div>
-      <Menu defaultSelectedKeys={['1']} mode='inline' theme='dark' items={menuList}
-            style={{width: collapsed ? '80': 'auto'}}
+      <Menu mode='inline'
+            theme='dark'
+            style={{width: collapsed ? '80' : 'auto'}}
+            onClick={handleClickMenu}
+            selectedKeys={selectedKeys}
+            items={menuList}
       />
     </div>
   )

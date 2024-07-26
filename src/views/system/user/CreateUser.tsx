@@ -153,7 +153,7 @@ const CreateUser = (props: IModalProp) => {
             headers={
               {
                 Authorization: 'Bearer ' + storage.get('token'),
-                icode: '5050DF22A6E30E29'
+                icode: '1CADF49A90E3DC57'
               }
             }
             action={'/api/users/upload'}

@@ -13,7 +13,7 @@ const instance = axios.create({
   timeoutErrorMessage: '请求超时，请稍后再试',
   withCredentials: true,
   headers: {
-    icode: '5050DF22A6E30E29'
+    icode: '1CADF49A90E3DC57'
   }
 })
 
