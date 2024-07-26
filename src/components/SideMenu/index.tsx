@@ -53,7 +53,7 @@ const SideMenu = () => {
   // 递归生成菜单
   const getTreeMenu = (menuList: IMenu.MenuItem[], treeList: MenuItem[] = []) => {
     menuList.forEach((item, index) => {
-      if (item.menuType === 1) {
+      if (item.menuType === 1 && item.menuState === 1) {
         // 存在按钮，证明是末级菜单了
         if (item.buttons) {
           return treeList.push(
