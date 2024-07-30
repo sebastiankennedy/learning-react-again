@@ -4,9 +4,16 @@ import {useForm} from "antd/es/form/Form";
 import {Role, User} from "@/types/api";
 import roleApi from "@/api/roleApi";
 import {formatDate} from "@/utils";
+import CreateRole from "@/views/role/CreateRole";
+import {useRef} from "react";
+import {IAction} from "@/types/modal";
+import {ColumnsType} from "antd/es/table";
 
 export default function RoleList() {
   const [form] = useForm()
+  const roleRef = useRef<{
+    open: (type: IAction, data?: Role.RoleItem) => void
+  }>()
   const getTableData = async ({current, pageSize}: { current: number, pageSize: number }, formData: Role.Params) => {
     const data = await roleApi.getRoleList({...formData, pageNum: current, pageSize: pageSize});
     return {
@@ -16,8 +23,8 @@ export default function RoleList() {
   }
 
   const {tableProps, search,} = useAntdTable(getTableData, {form, defaultPageSize: 10})
-
-  const columns = [
+  // 定义一个行字段类型
+  const columns: ColumnsType<Role.RoleItem> = [
     {
       title: '角色名称',
       dataIndex: 'roleName',
@@ -46,12 +53,11 @@ export default function RoleList() {
     },
     {
       title: '操作',
-      dataIndex: 'action',
       key: 'action',
-      render: () => {
+      render: (_, record) => {
         return (
           <Space>
-            <Button>编辑</Button>
+            <Button onClick={() => handleEdit(record)}>编辑</Button>
             <Button>设置权限</Button>
             <Button>删除</Button>
           </Space>
@@ -60,8 +66,12 @@ export default function RoleList() {
     },
   ]
 
-  const handleCreate = () => {
+  const handleEdit = (data: Role.RoleItem) => {
+    roleRef.current?.open('edit', data)
+  }
 
+  const handleCreate = () => {
+    roleRef.current?.open('create')
   }
 
   return (
@@ -87,11 +97,12 @@ export default function RoleList() {
         </div>
         <Table
           bordered
-          rowKey='userId'
+          rowKey='_id'
           columns={columns}
           {...tableProps}
         />
       </div>
+      <CreateRole mRef={roleRef} update={search.submit}/>
     </div>
   )
 }
