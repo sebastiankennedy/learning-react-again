@@ -30,36 +30,36 @@ export interface PageParams {
 }
 
 // 部门管理
-  export namespace Dept {
+export namespace Dept {
 
-    export interface Params {
-      deptName?:string
-    }
-
-    export interface CreateParams {
-      deptName:string
-      parentId?: string
-      userName: string
-    }
-
-    export interface EditParams extends CreateParams{
-      _id: string
-    }
-
-    export interface DelParams {
-      _id: string
-    }
-
-    export interface DeptItem {
-      _id: string
-      createTime: string
-      updateTIme: string
-      deptName: string
-      parentId: string
-      userName: string
-      children: DeptItem[]
-    }
+  export interface Params {
+    deptName?: string
   }
+
+  export interface CreateParams {
+    deptName: string
+    parentId?: string
+    userName: string
+  }
+
+  export interface EditParams extends CreateParams {
+    _id: string
+  }
+
+  export interface DelParams {
+    _id: string
+  }
+
+  export interface DeptItem {
+    _id: string
+    createTime: string
+    updateTIme: string
+    deptName: string
+    parentId: string
+    userName: string
+    children: DeptItem[]
+  }
+}
 
 // 用户类型
 export namespace User {
@@ -151,7 +151,7 @@ export namespace Menu {
     orderBy: number
   }
 
-  export interface EditParams extends CreateParams{
+  export interface EditParams extends CreateParams {
     _id: string
   }
 
@@ -159,10 +159,30 @@ export namespace Menu {
     _id: string
   }
 
-  export interface MenuItem extends CreateParams{
+  export interface MenuItem extends CreateParams {
     _id: string
     createTime: string
     buttons?: MenuItem[]
     children?: MenuItem[]
+  }
+}
+
+export namespace Role {
+  export interface Params extends PageParams{
+    roleName?: string
+  }
+
+  export interface CreateParams {
+    roleName: string
+    remark?: string
+  }
+
+  export interface RoleItem extends CreateParams {
+    _id: string,
+    permissionList: {
+      checkedKeys: string[],
+    },
+    updateTime: string,
+    createTime: string,
   }
 }

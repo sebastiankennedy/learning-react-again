@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
+    "ahooks": "^3.8.0",
     "antd": "^5.17.0",
     "axios": "^1.6.8",
     "echarts": "^5.5.0",
