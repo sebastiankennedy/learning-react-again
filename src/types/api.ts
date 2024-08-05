@@ -178,6 +178,7 @@ export namespace Role {
   }
 
   export interface RoleItem extends CreateParams {
+    _id: string
     permissionList: {
       checkedKeys: string[],
     },

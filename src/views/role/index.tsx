@@ -8,6 +8,7 @@ import CreateRole from "@/views/role/CreateRole";
 import {useRef} from "react";
 import {IAction} from "@/types/modal";
 import {ColumnsType} from "antd/es/table";
+import {message} from "@/utils/AntdGlobal";
 
 export default function RoleList() {
   const [form] = useForm()
@@ -59,7 +60,7 @@ export default function RoleList() {
           <Space>
             <Button onClick={() => handleEdit(record)}>编辑</Button>
             <Button>设置权限</Button>
-            <Button>删除</Button>
+            <Button onClick={() => handleDelete(record._id)}>删除</Button>
           </Space>
         )
       }
@@ -72,6 +73,19 @@ export default function RoleList() {
 
   const handleCreate = () => {
     roleRef.current?.open('create')
+  }
+
+  // 删除确认
+  const handleDelete = (_id: string) => {
+    Modal.confirm({
+      title: '删除角色',
+      content: <span>确定要删除该角色吗？</span>,
+      async onOk() {
+        await roleApi.delRole({_id: _id})
+        message.success('删除成功')
+        search.submit()
+      }
+    })
   }
 
   return (
