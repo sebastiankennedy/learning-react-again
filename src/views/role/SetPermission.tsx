@@ -3,6 +3,8 @@ import {useEffect, useImperativeHandle, useState} from "react";
 import {IAction, IModalProp} from "@/types/modal";
 import {Menu, Role} from "@/types/api";
 import api from "@/api";
+import roleApi from "@/api/roleApi";
+import {message} from "@/utils/AntdGlobal";
 
 export default function SetPermission(props: IModalProp<Role.RoleItem>) {
   const [visible, setVisible] = useState(false)
@@ -11,6 +13,7 @@ export default function SetPermission(props: IModalProp<Role.RoleItem>) {
   const [checkedKeys, setCheckedKeys] = useState<string[]>([])
   const [form] = Form.useForm()
   const [roleInfo, setRoleInfo] = useState<Role.RoleItem>()
+  const [permissionList, setPermissionList] = useState<Role.Permission>()
 
   useEffect(() => {
     getMenuList()
@@ -38,16 +41,42 @@ export default function SetPermission(props: IModalProp<Role.RoleItem>) {
 
   // 提交
   const handleOk = async () => {
+    if (permissionList) {
+      const data = await roleApi.updatePermission(permissionList)
+      message.success('权限设置成功')
+      handleCancel()
+      props.update()
+    }
   }
 
   // 取消
   const handleCancel = () => {
     // 关闭弹窗
     setVisible(false)
+    setPermissionList(undefined)
   }
 
-  const onCheck = () => {
+  const onCheck = (checkedKeysValue: any, item: any) => {
+    setCheckedKeys(checkedKeysValue)
 
+    const checkedKeys: string[] = []
+    const parentKeys: string[] = []
+    item.checkedNodes.map((node: Menu.MenuItem) => {
+      if (node.menuType === 2) {
+        // 如果是菜单，则添加到 checkedKeys，作为最终权限节点存储进去
+        checkedKeys.push(node._id)
+      } else {
+        parentKeys.push(node._id)
+      }
+    })
+
+    setPermissionList({
+      _id: roleInfo?._id || '',
+      permissionList: {
+        checkedKeys: checkedKeys,
+        halfCheckedKeys: parentKeys.concat(item.halfCheckedKeys),
+      }
+    })
   }
   return <Modal
     title={'设置权限'}
@@ -59,10 +88,8 @@ export default function SetPermission(props: IModalProp<Role.RoleItem>) {
     onCancel={handleCancel}
   >
     <Form labelAlign={"right"} labelCol={{span: 4}}>
-      <Form.Item name={'roleName'} label={'角色名称'}>
-        角色名称
-      </Form.Item>
-      <Form.Item name={'remark'} label={'权限'}>
+      <Form.Item label={'角色名称'}>角色名称</Form.Item>
+      <Form.Item label={'权限'}>
         <Tree
           checkable
           onCheck={onCheck}

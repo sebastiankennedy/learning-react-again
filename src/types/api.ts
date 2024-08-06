@@ -168,7 +168,7 @@ export namespace Menu {
 }
 
 export namespace Role {
-  export interface Params extends PageParams{
+  export interface Params extends PageParams {
     roleName?: string
   }
 
@@ -181,6 +181,7 @@ export namespace Role {
     _id: string
     permissionList: {
       checkedKeys: string[],
+      halfCheckedKeys: string[],
     },
     updateTime: string,
     createTime: string,
@@ -188,5 +189,13 @@ export namespace Role {
 
   export interface EditParams extends CreateParams {
     _id: string,
+  }
+
+  export interface Permission {
+    _id: string
+    permissionList: {
+      checkedKeys: string[]
+      halfCheckedKeys: string[]
+    }
   }
 }

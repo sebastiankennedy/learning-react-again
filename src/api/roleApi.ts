@@ -18,5 +18,9 @@ export default {
   // 删除角色
   delRole(params: { _id: string }) {
     return request.post('/roles/delete', params)
+  },
+  // 更新角色权限
+  updatePermission(params: Role.Permission) {
+    return request.post('/roles/update/permission', params)
   }
 }
