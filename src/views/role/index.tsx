@@ -5,6 +5,7 @@ import {Role, User} from "@/types/api";
 import roleApi from "@/api/roleApi";
 import {formatDate} from "@/utils";
 import CreateRole from "@/views/role/CreateRole";
+import SetPermission from "@/views/role/SetPermission";
 import {useRef} from "react";
 import {IAction} from "@/types/modal";
 import {ColumnsType} from "antd/es/table";
@@ -13,6 +14,10 @@ import {message} from "@/utils/AntdGlobal";
 export default function RoleList() {
   const [form] = useForm()
   const roleRef = useRef<{
+    open: (type: IAction, data?: Role.RoleItem) => void
+  }>()
+
+  const permissionRef = useRef<{
     open: (type: IAction, data?: Role.RoleItem) => void
   }>()
   const getTableData = async ({current, pageSize}: { current: number, pageSize: number }, formData: Role.Params) => {
@@ -59,7 +64,7 @@ export default function RoleList() {
         return (
           <Space>
             <Button onClick={() => handleEdit(record)}>编辑</Button>
-            <Button>设置权限</Button>
+            <Button onClick={() => handleSetPermission(record)}>设置权限</Button>
             <Button onClick={() => handleDelete(record._id)}>删除</Button>
           </Space>
         )
@@ -86,6 +91,10 @@ export default function RoleList() {
         search.submit()
       }
     })
+  }
+
+  const handleSetPermission = (record: Role.RoleItem) => {
+    permissionRef.current?.open('edit', record)
   }
 
   return (
@@ -117,6 +126,7 @@ export default function RoleList() {
         />
       </div>
       <CreateRole mRef={roleRef} update={search.submit}/>
+      <SetPermission mRef={permissionRef} update={search.submit}/>
     </div>
   )
 }
