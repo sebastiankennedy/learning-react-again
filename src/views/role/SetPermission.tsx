@@ -34,6 +34,7 @@ export default function SetPermission(props: IModalProp<Role.RoleItem>) {
     setAction(type)
     setRoleInfo(data)
     setVisible(true)
+    setCheckedKeys(data?.permissionList.checkedKeys || [])
     if (data) {
       form.setFieldsValue(data)
     }

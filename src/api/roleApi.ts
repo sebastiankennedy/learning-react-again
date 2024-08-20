@@ -22,5 +22,9 @@ export default {
   // 更新角色权限
   updatePermission(params: Role.Permission) {
     return request.post('/roles/update/permission', params)
+  },
+  // 获取所有角色列表
+  getAllRoleList() {
+    return request.get<Role.RoleItem[]>('/roles/allList')
   }
 }
