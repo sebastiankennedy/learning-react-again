@@ -11,7 +11,7 @@ import MenuList from "@/views/system/menu";
 import AuthLoader from "@/router/AuthLoader";
 import RoleList from "@/views/role";
 
-const router = [
+export const routers = [
   {
     path: '*',
     element: <Navigate to='404' />
@@ -55,7 +55,10 @@ const router = [
       },
       {
         path: '/menuList',
-        element: <MenuList />
+        element: <MenuList />,
+        meta: {
+          auth: false
+        }
       },
       {
         path: '/roleList',
@@ -65,4 +68,4 @@ const router = [
   }
 ]
 
-export default createBrowserRouter(router)
+export default createBrowserRouter(routers)
