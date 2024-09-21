@@ -56,9 +56,6 @@ export const routers = [
       {
         path: '/menuList',
         element: <MenuList />,
-        meta: {
-          auth: false
-        }
       },
       {
         path: '/roleList',

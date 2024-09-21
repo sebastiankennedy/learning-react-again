@@ -32,9 +32,11 @@ const App: React.FC = () => {
   } else {
     // 权限判断
     const data = useRouteLoaderData('layout') as IAuthLoader
+    console.log('路由权限判断', data)
+    console.log('当前路由路径', pathname)
     const staticPath = ['/welcome', '/403', '/404',]
     // 如果没有权限，且不在白名单中，则跳转到403页面
-    if (data.menuPathList.includes(pathname) && !staticPath.includes(pathname)) {
+    if (!data.menuPathList.includes(pathname) && !staticPath.includes(pathname)) {
       return <Navigate to={'/403'}/>
     }
   }

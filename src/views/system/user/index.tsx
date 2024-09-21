@@ -7,6 +7,7 @@ import {formatDate} from '@/utils'
 import CreateUser from "@/views/system/user/CreateUser";
 import {IAction} from "@/types/modal";
 import {message} from "@/utils/AntdGlobal";
+import AuthButton from "@/components/AuthButton";
 
 export default function UserList() {
   const [form] = Form.useForm()
@@ -218,7 +219,8 @@ export default function UserList() {
         <div className='header-wrapper'>
           <div className='title'>用户列表</div>
           <div className='action'>
-            <Button type='primary' onClick={handleCreate}>新增</Button>
+            {/*<Button type='primary' onClick={handleCreate}>新增</Button>*/}
+            <AuthButton auth={'create'} type='primary' onClick={handleCreate}>新增</AuthButton>
             <Button type='primary' danger onClick={handlePatchConfirm}>
               批量删除
             </Button>
